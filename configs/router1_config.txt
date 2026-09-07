@@ -1,0 +1,133 @@
+Current configuration : 2179 bytes
+!
+version 15.4
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+!
+hostname Router1
+!
+!
+!
+enable secret 5 $1$mERr$9cTjUIEqNGurQiFU.ZeCi1
+!
+!
+ip dhcp excluded-address 192.168.10.1 192.168.10.10
+ip dhcp excluded-address 192.168.20.1 192.168.20.10
+ip dhcp excluded-address 192.168.30.1 192.168.30.10
+ip dhcp excluded-address 192.168.99.1 192.168.99.10
+!
+ip dhcp pool STAFF_POOL
+ network 192.168.10.0 255.255.255.0
+ default-router 192.168.10.1
+ dns-server 8.8.8.8
+ip dhcp pool STUDENT_POOL
+ network 192.168.20.0 255.255.255.0
+ default-router 192.168.20.1
+ dns-server 8.8.8.8
+ip dhcp pool GUEST_POOL
+ network 192.168.30.0 255.255.255.0
+ default-router 192.168.30.1
+ dns-server 8.8.8.8
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+username admin privilege 15 secret 5 $1$mERr$9cTjUIEqNGurQiFU.ZeCi1
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain-lookup
+ip domain-name NET2201_G5.local
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0/0.10
+ description VLAN 10 Staff Gateway
+ encapsulation dot1Q 10
+ ip address 192.168.10.1 255.255.255.0
+!
+interface GigabitEthernet0/0/0.20
+ description VLAN 20 Student Gateway
+ encapsulation dot1Q 20
+ ip address 192.168.20.1 255.255.255.0
+!
+interface GigabitEthernet0/0/0.30
+ description VLAN 30 Guest Gateway
+ encapsulation dot1Q 30
+ ip address 192.168.30.1 255.255.255.0
+!
+interface GigabitEthernet0/0/0.99
+ description VLAN 99 Management Gateway (Native)
+ encapsulation dot1Q 99 native
+ ip address 192.168.99.1 255.255.255.0
+!
+interface GigabitEthernet0/0/1
+ description WAN Link to ISP
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0/2
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip classless
+ip route 0.0.0.0 0.0.0.0 203.0.113.2 
+!
+ip flow-export version 9
+!
+!
+!
+banner motd ^C Unauthorised access is prohibited ^C
+!
+!
+!
+!
+line con 0
+ password 7 0822455D0A16
+ logging synchronous
+ login
+!
+line aux 0
+!
+line vty 0 4
+ password 7 0822455D0A16
+ login
+ transport input ssh
+line vty 5 15
+ password 7 0822455D0A16
+ login
+ transport input ssh
+!
+!
+!
+end
